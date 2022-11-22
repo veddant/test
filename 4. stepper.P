@@ -1,0 +1,37 @@
+
+;program for stepper motor thr.port 0 of 89v51RD2,
+;lines used p2.0 to p2.3
+;motor rotates in forward direction
+;to change the direction use "Reverse" look up table
+
+ORG     0000h
+SJMP    0030H
+
+ORG     0030H
+START1:	mov tmod,#10h
+MOV     DPTR,#FORWARD  ;load forward direction table
+MOV     R7,#08H	      ; steps 
+NEXT:   CLR     A
+
+MOVC    A,@A+DPTR         ; ini. A for signal.
+INC     DPTR
+MOV     P2,A  		      ;out stepper signal to p2
+           
+ACALL   DELAY
+   
+Djnz   R7,NEXT         ; keep in step loop
+SJMP    START1              ; keep in continous loop
+
+	   DELAY:  MOV TL1,#00H
+	MOV TH1,#00H
+	SETB TR1
+BACK:   JNB TF1,BACK
+	CLR TR1
+	CLR TF1
+	RET
+
+
+REVERSE: DB 01H,03H,02H,06H,04H,0CH,08H,09H  ;                                                                           
+FORWARD: DB 09H,08H,0CH,04H,06H,02H,03H,01H  ;
+
+   

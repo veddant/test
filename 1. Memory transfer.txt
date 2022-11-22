@@ -1,0 +1,18 @@
+	ORG 0000H ;burn into ROM starting at 0
+	MOV DPTR,#400H ;DPTR=400H look-up table addr
+	MOV r0,#60h
+	MOV r3,#03h
+ BACK: 
+	CLR A ;clear A(A=0)
+	MOVC A,@A+DPTR ;get the char from code space
+	MOV @r0,a 
+	INC DPTR 
+	INC r0
+djnz r3, BACK
+
+Here: SJMP HERE ;stay here
+;Data is burned into code space starting at 400H
+
+ORG 400H
+ DB "SAE"
+END ;end of program

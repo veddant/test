@@ -1,0 +1,26 @@
+
+; using AD_DA card
+
+ORG     0000H
+SJMP   START
+
+ 
+
+
+START:  MOV   A,#0FFH      ;initialise A for high
+LOOP1: MOV   P3,A
+        DEC   A	        ; for low
+	   
+	
+        CJNE  A,#00H,LOOP1
+        
+LOOP2:  INC   A
+		MOV   P3,A
+		
+        CJNE  A,#0FFH,LOOP2
+        SJMP loop1
+
+      END
+
+
+
